@@ -6,7 +6,9 @@ from .. import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
-from ...config import Config
+# from ...config import Config　　　# 这样会导致循环引用，虽然我不知道是什么鬼，但是这个问题好难
+# 以后要用config的地方，一定要使用current_app了, 而且要用字典的方式获取
+from flask import current_app
 
 
 class User(db.Model):
@@ -15,7 +17,7 @@ class User(db.Model):
     """
     __tablename__ = 'users'
 
-    id = db.Column(db.Interger, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), unique=True)
     password_hash = db.Column(db.String(128))
 
@@ -41,7 +43,8 @@ class User(db.Model):
         :param expiration: 有效时间, int, 默认十分钟 
         :return: token, 这是一个byte值, 所以后面需要decode
         """
-        s = Serializer(Config.SECRET_KEY, expires_in=expiration)
+        # config类似于字典的获取方式
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
         # 这里一定要转为Str，不然不能dumps
         return s.dumps({'id': str(self.id)})
 
@@ -52,7 +55,7 @@ class User(db.Model):
         :param token: token
         :return: user 
         """
-        s = Serializer(Config.SECRET_KEY)
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
         except SignatureExpired:

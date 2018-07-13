@@ -44,14 +44,14 @@ def auth_error():
 
 # todo, 好好研究一下这个怎么放比较好
 # 这个before_request仅仅对api下的路由生效
-@api.before_request
-@auth.login_required
-def before_request():
-    """
-    这么做的作用就是让api下所有的路由都需要auth.login_required
-    :return:
-    """
-    pass
+# @api.before_request
+# @auth.login_required
+# def before_request():
+#     """
+#     这么做的作用就是让api下所有的路由都需要auth.login_required
+#     :return:
+#     """
+#     pass
 
 
 @api.route('/token')

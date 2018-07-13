@@ -71,3 +71,11 @@ class UserUtils:
         db.commit()
         response = {"username": username, 'type': 'delete', 'error_code': 0}
         return jsonify(response)
+
+
+@api.route('/test')
+def get_random_number():
+    import random
+    return jsonify(
+        {'random_number': random.randint(0, 100)}
+    )

@@ -27,4 +27,6 @@ def create_app(config_name):
     # init backend config by a static method
     config[config_name].init_app(app)
     db.init_app(app)
+    from .api import api
+    app.register_blueprint(api, url_prefix='/api')
     return app
