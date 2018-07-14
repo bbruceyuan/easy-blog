@@ -27,6 +27,8 @@ const basicRoutes = basicRouterOptions.map(
   }
 )
 
+// todo, 这里需要加上一些和admin相关的路由
+
 const routes = [
   ...basicRoutes
 ]
