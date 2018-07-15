@@ -2,18 +2,19 @@
 
 <template>
   <div>
-      <!-- <p>Home page</p>
-      <p>New Test from flask : {{testNumber}}</p> -->
-      <!-- <button @click="getTest">New Test</button> -->
-      <!-- <Button @click="getTest" type="primary">New Test</Button> -->
+      <p>Home page</p>
+      <!-- <p>New Test from flask : {{testNumber}}</p>
+      <button @click="getTest">New Test</button>
+      <Button @click="getTest" type="primary">New Test</Button> -->
       <Row type="flex" justify="start">
         <Col span="8">col-12</Col>
-        <Col span="8">
+        <Col span="4">
           <Timeline>
             <TimelineItem color="green">
               <p class="time">1976年</p>
               <p class="content">「更大的世界」</p>
-              <p class="content">「Vue 与 Flask 的最佳实践」</p>
+              <p class="content">「Vue 与 Flask 
+                的最佳哈哈哈哈哈哈哈啊哈和福建大厦附近啊圣诞节水电费卡上就付款实科技副驾驶的发生可到付件凯撒的积分卡水电费是大家发空间践」</p>
               <p class="content">「更大的世界」</p>
               <p class="content">「Vue 与 sFlask 的最佳实践」</p>
               <p class="content">「更大的世界」</p>
@@ -60,10 +61,10 @@ export default {
   name: 'home',
   mounted () {
     console.log(this.testNumber)
-    this.$Spin.show()
-    setTimeout(() => {
-      this.$Spin.hide()
-    }, 1500)
+    // this.$Spin.show()
+    // setTimeout(() => {
+    //   this.$Spin.hide()
+    // }, 1500)
   },
   data () {
     return {
@@ -72,10 +73,10 @@ export default {
   },
   methods: {
     getNumberFromBackend () {
-      const path = 'http://localhost:5000/api/test'
+      const path = '/api/test'
       axios.get(path)
         .then(response => {
-          this.testNumber = response.data.testNumber
+          this.testNumber = response.data.random_number
         })
         .catch(error => {
           console.log(error)

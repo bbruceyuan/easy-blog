@@ -18,7 +18,6 @@ def unauthorized(message):
     return response
 
 
-# todo, not used yet
 def forbidden(message):
     response = jsonify({'error': 'forbidden', 'message': message})
     response.status_code = 403

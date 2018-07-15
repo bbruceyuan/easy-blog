@@ -9,14 +9,15 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "iview": "^2.14.3",
     "vue": "^2.5.16",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",
-    "iview": "^2.14.3",
     "vue-template-compiler": "^2.5.16"
   },
   "eslintConfig": {
@@ -28,7 +29,14 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "vue/no-parsing-error": [
+        2,
+        {
+          "x-invalid-end-tag": false
+        }
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
