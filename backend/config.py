@@ -12,7 +12,9 @@ class Config:
 
     # flask config
     SECRET_KEY = os.getenv('SECRET_KEY', 'please set a secret string')
+    FLASKY_POSTS_PER_PAGE = 15
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    USERNAME = 'BBruceyuan'
 
     @staticmethod
     def init_app(app):

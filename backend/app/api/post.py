@@ -11,7 +11,10 @@ from .errors import forbidden
 @api.route('/posts/')
 def get_posts():
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.paginate(page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'], error_out=False)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page,
+        per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False)
     posts = pagination.items
     prev = None
     if pagination.has_prev:
@@ -20,7 +23,11 @@ def get_posts():
     if pagination.has_next:
         next_ = url_for('api.get_posts', page=page + 1)
     return jsonify(
-        {'posts': [post.to_json() for post in posts], 'prev': prev, 'next': next_, 'count': pagination.total})
+        {
+            'posts': [post.to_json() for post in posts],
+            'prev': prev,
+            'next': next_,
+            'count': pagination.total})
 
 
 @api.route('/posts/', method=['POST'])

@@ -20,6 +20,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), unique=True)
     password_hash = db.Column(db.String(128))
+    email = db.Column(db.String(64))
+    # 虽然已经在post类中加了反向引用，但是因为lazy设置为dynamic不能是多对一/一对一。所以这里需要在User上加上关系
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     @property
     def password(self):

@@ -15,7 +15,7 @@ auth = HTTPBasicAuth()
 @auth.verify_password
 def verify_password(username_or_token, password):
     """
-    这获取的是头部中auth中的值
+    这获取的是头部中auth中的值,也有可能是邮箱
     :param username_or_token: 
     :param password: 
     :return: 
@@ -29,7 +29,11 @@ def verify_password(username_or_token, password):
         g.current_user = User.verify_auth_token(username_or_token)
         g.token_used = True
         return g.current_user is not None
-    user = User.query.get(username=username_or_token)
+    # get 只能用于查询主键对应的行，所以这里要用filter_by
+    # user = User.query.get(username=username_or_token)
+    user = User.query.filter_by(username=username_or_token).first()
+    if not user:
+        user = User.query.filter_by(email=username_or_token).first()
     if not user:
         return False
     g.current_user = user
@@ -39,7 +43,7 @@ def verify_password(username_or_token, password):
 
 @auth.error_handler
 def auth_error():
-    return unauthorized('Invalid credentials')
+    return unauthorized('Unauthorized Access')
 
 
 # todo, 好好研究一下这个怎么放比较好
@@ -58,7 +62,7 @@ def before_request():
 def get_token():
     # 因为g.current_user.generate_auth.token是一个byte值，所以需要decode
     data = {
-        'token': g.current_user.generate_auth_token(expiration=3600).decode('utf-8'),
-        'expiration': 3600
+        'token': g.current_user.generate_auth_token(expiration=360000).decode('utf-8'),
+        'expiration': 360000
     }
     return jsonify(data)

@@ -1,3 +1,3 @@
-module.exports = {
-  baseUrl: 'dist'
-}
+// module.exports = {
+//   baseUrl: 'dist'
+// }

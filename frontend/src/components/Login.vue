@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <Row type="flex" justify="center">
-      <i-col :sm="16" :md="12" :lg="8" :xs="22">
+      <i-col :sm="16" :md="16" :lg="16" :xs="22">
       <Card>
         <p slot="title">
           <Icon slot="prepend" type="log-in"></Icon>
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     handleSubmit (name, form) {
-      // form中的remember需要经过一下特殊的处理，我好想还不知道该怎么做 todo
+      // form中的remember需要经过一下特殊的处理，我好像还不知道该怎么做 todo
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.$axios.defaults.auth = {
@@ -82,21 +82,21 @@ export default {
           }
           this.$axios.defaults.baseURL = 'http://127.0.0.1:5000'
           // 这里需要是用axios进行一下post
-          const msg = this.$Message.loading('I am logging...')
+          const msg = this.$Message.loading('I am loading...')
           msg()
-          console.log('I am here')
           this.$axios.post('/login', form)
             .then(
               response => {
-                console.log(response)
+                // console.log(response)
                 let data = response.data
                 console.log(data)
+                this.$router.push('/')                
                 this.$Message.success('success login')
               }
             )
             .catch(error => {
-              console.log('something wrong')
-              if (error === 'Unauthorized Access') {
+              // 这里的error主要是后端放回的一个json数据
+              if (error['error'] === 'unauthorized') {
                 this.$Message.error('账户名/密码有误!')
               }
             })
@@ -111,5 +111,7 @@ export default {
 </script>
 
 <style scoped>
-
+#login {
+  margin-top: 4em;
+}
 </style>

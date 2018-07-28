@@ -36,8 +36,12 @@ def create_app(config_name):
     db.init_app(app)
 
     # 蓝图的注册
-    from .api import api
+    # from .api import api
+    # from .main import main as main_blueprint
+    # app.register_blueprint(main_blueprint)
+    # app.register_blueprint(api, url_prefix='/api')
     from .main import main as main_blueprint
+    from .api import api
     app.register_blueprint(main_blueprint)
     app.register_blueprint(api, url_prefix='/api')
     return app
