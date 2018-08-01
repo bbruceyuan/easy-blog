@@ -4,7 +4,7 @@
       <i-col :sm="16" :md="16" :lg="16" :xs="22">
       <Card>
         <p slot="title">
-          <Icon slot="prepend" type="log-in"></Icon>
+          <Icon slot="prepend" type="ios-log-in"></Icon>
            &nbsp;&nbsp;&nbsp;登录
         </p>
         <Form ref="formData" :model="formData" :rules="ruleFormData">
@@ -47,6 +47,7 @@
 
 import ISwitch from '../../node_modules/iview/src/components/switch/switch.vue'
 import ICol from '../../node_modules/iview/src/components/grid/col.vue'
+import * as types from '../store/mutationTypes'
 
 export default {
   components: {
@@ -80,7 +81,7 @@ export default {
             username: form.username,
             password: form.password
           }
-          this.$axios.defaults.baseURL = 'http://127.0.0.1:5000'
+          // this.$axios.defaults.baseURL = 'http://127.0.0.1:5000'
           // 这里需要是用axios进行一下post
           const msg = this.$Message.loading('I am loading...')
           msg()
@@ -89,7 +90,13 @@ export default {
               response => {
                 // console.log(response)
                 let data = response.data
-                console.log(data)
+                // data = {
+                //    loginUser: '',
+                //    token: ''
+                // }
+                // console.log(data)
+                const payload = data
+                this.$store.commit(types.LOGIN, payload)
                 this.$router.push('/')                
                 this.$Message.success('success login')
               }

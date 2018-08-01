@@ -16,8 +16,15 @@ axios.defaults.auth = {
 // 这里功能基本和router上的路由拦截器功能一样，不过主要是针对后端
 // 因为有些api不需要改变浏览器地址栏
 axios.interceptors.request.use((config) => {
+  config.headers['Access-Control-Allow-Origin'] = '*'
   if (store.state.token) {
-    config.headers.Authorization = `token ${store.state.token}`
+    // console.log('hello world')
+    // 不知道为什么设置authorization没有效果
+    config.headers['Authorization'] = `token ${store.state.token}`
+    // config.auth = {
+    //   username: store.state.token,
+    //   password: ''
+    // }
   }
   return config
 }, (error) => {

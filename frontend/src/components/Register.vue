@@ -4,7 +4,7 @@
       <i-col :sm="16" :md="16" :lg="16" :xs="22">
       <Card>
         <p slot="title">
-          <Icon slot="prepend" type="erson-add"></Icon>>
+          <Icon slot="prepend" type="ios-person-add-outline"></Icon>
           &nbsp;&nbsp;&nbsp;注册
         </p>
         <Form ref="formData" :model="formData" :rules="ruleFormData">
@@ -112,14 +112,12 @@ export default {
               this.$Message.success(data.username + '注册成功')
               this.$router.push('/login')
             })
-            .catch(error => {
+            .catch(() => {
               // 这里的error其实是一个对象, todo,　后面考虑
-              // if (error.status_code === 400) {
               this.$Message.error({
                 content: '账号已经存在，请换一个用户名或者邮箱，具体信息提示是后期功能',
                 duration: 2.5
               })
-              // }
               this.$refs[name].resetFields()
             })
         } else {

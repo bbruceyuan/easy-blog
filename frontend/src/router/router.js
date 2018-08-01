@@ -13,14 +13,16 @@ const basicRouterOptions = [
     component: 'Home'
   },
   {
+    path: '/api/posts',
+    redirect: '/',
+  },
+  {
     path: '/post',
     redirect: '/',
-    component: 'Home'
   },
   {
     path: '/posts',
     redirect: '/',
-    component: 'Home'
   },
   {
     path: '/login',
@@ -29,10 +31,6 @@ const basicRouterOptions = [
   {
     path: '/register',
     component: 'Register'
-  },
-  {
-    path: '/layout',
-    component: 'MyLayout'
   },
   {
     path: '*', 
@@ -71,10 +69,15 @@ const otherSinglePage = [
   },
   {
     path: '/compose',
+    meta: { requiresAuth: true },
     component: () => import('../components/compose/Compose.vue')
   },
   {
-    path: '/post/:pid',
+    path: '/posts/:pid',
+    component: () => import('../components/post/Post.vue')
+  },
+  {
+    path: '/api/posts/:pid',
     component: () => import('../components/post/Post.vue')
   }
 ]

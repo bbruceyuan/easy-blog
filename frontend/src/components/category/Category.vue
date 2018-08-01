@@ -1,17 +1,77 @@
 <template>
-  <div>this is the category page</div>
+  <div class="categoryCard">
+    <Card 
+      class="card" 
+      :bordered='false'
+      dis-hover
+    >
+      <p slot="title" style="font-size: 22px; height: 25px;">categories</p>
+      
+      <Button v-for="item in tags" 
+        :key="item" 
+        :name="item" 
+        shape="circle"
+        size="large"
+        style="font-size: 20px;"
+        v-on:click="handleClick(item)"
+      >
+        {{ item }}
+      </Button>
+
+    </Card>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'category',
   data: function() {	
-    return {}
+    return {
+      tags: []
+    }
   },
-  methods: {}
+  mounted () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData () {
+      this.$axios.get('/api/categories')
+        .then(
+          response => {
+            this.tags = response.data
+          }
+        )
+        .catch(
+          () => {
+            this.$Message.error('获取标签失败')
+          }
+        )
+    },
+
+    handleClick (name) {
+      this.$Message.info("todo, please wait for completing by author")
+    }
+  }
 }
 </script>
 
 <style scoped>
 
+.categoryCard {
+  margin-top: 2em;
+}
+
+.card {
+  font-size: 20px;
+}
+
+</style>
+
+<style>
+.ivu-card-body {
+  padding-top: 3em;
+}
+.ivu-card-head p, .ivu-card-head-inner {
+  height: 25px;
+}
 </style>

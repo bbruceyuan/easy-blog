@@ -20,6 +20,7 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,7 +28,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 3em;
-  /* font-size: 15px; */
+  font-size: 16px;
   background-color: #fff;
 }
+
 </style>

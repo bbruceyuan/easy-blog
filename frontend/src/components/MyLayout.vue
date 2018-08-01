@@ -8,21 +8,24 @@
             v-model="isCollapsed  "
             v-bind:style="styleObj"
             class="self-sider">
-        <Menu active-name="1-1" 
+        <Menu 
           theme="light" 
-          @on-select='handleSelection'
           width="auto" 
-          :class="menuitemClasses">
-          <MenuItem name="home">
-            <Icon type="home"></Icon>
+          @on-select='handleSelection'
+          :class="menuitemClasses"
+        >
+          <MenuItem name="home"
+          >
+            <Icon type="ios-home-outline"></Icon>
             <span>home</span>
           </MenuItem>
-          <MenuItem name="category">
-            <Icon type="grid"></Icon>
+          <MenuItem 
+            name="category">
+            <Icon type="ios-apps-outline"></Icon>
             <span>category</span>
           </MenuItem>
           <MenuItem name="tag">
-            <Icon type="pricetags"></Icon>
+            <Icon type="ios-pricetags-outline"></Icon>
             <span>tag</span>
           </MenuItem>
           <MenuItem name="about">
@@ -33,17 +36,22 @@
             <Icon type="ios-person-outline"></Icon>
             <span>profile</span>
           </MenuItem>
-          <MenuItem name="compose">
-            <Icon type="ios-compose-outline"></Icon>
-            <span>compose</span>
-          </MenuItem>
-          <!-- 根据用户是否登入显示login 还是logout -->
-          <MenuItem name="logout" v-if="loginUser">
-            <Icon type="log-out"></Icon>
-            <span>logout</span>
-          </MenuItem>
-          <MenuItem name="login" v-else>
-            <Icon type="log-in"></Icon>
+          <div v-show="loginUser" v-bind="getLoginUser">
+            <!-- 根据用户是否登入显示login 还是logout -->            
+            <MenuItem name="compose">
+              <Icon type="ios-create-outline"></Icon>
+              <span>compose</span>
+            </MenuItem>
+            <MenuItem name="logout">
+              <Icon type="ios-exit-outline"></Icon>
+              <span>logout</span>
+            </MenuItem>
+          </div>
+          <MenuItem 
+            name="login" 
+            v-show="!loginUser"
+          >
+            <Icon type="ios-log-in"></Icon>
             <span>login</span>
           </MenuItem>
         </Menu>
@@ -57,18 +65,28 @@
 </template>
 
 <script>
+import * as types from '../store/mutationTypes'
+
 export default {
   name: 'myLayout',
   data: function() {	
     return {
-      loginUser: localStorage.getItem('loginUser'),
+      loginUser: '',
       isCollapsed: false
     }
   },
   methods: {
     handleSelection (name) {
       if (name === 'logout') {
-        this.$router.push('/' + name)
+        // this.$router.push('/' + name)
+        this.$axios.get('/logout')
+          .then(
+          )
+          .catch(
+
+          )
+        this.$store.commit(types.LOGOUT)
+        this.$router.push('/')
       } else {
         // 这个要针对根目录
         this.$router.push('/' + name)
@@ -76,6 +94,10 @@ export default {
     }
   },
   computed: {
+    getLoginUser () {
+      this.loginUser = this.$store.state.loginUser
+      return null
+    },
     menuitemClasses: function () {
       return [
         'menu-item',
@@ -84,7 +106,7 @@ export default {
     },
     styleObj () {
       let screenWidth =  window.screen.width
-      let marginLeftWidth = '14em'
+      let marginLeftWidth = '12em'
       // 因为iview默认的就是480作为触发
       if (screenWidth < 480){
         marginLeftWidth = '0'
@@ -116,12 +138,12 @@ export default {
 
 .self-sider {
   background-color: #fff;
-  margin-top: 6em;
+  margin-top: 5em;
 }
 
 .content {
   background-color: #fff;
-  padding: 0em 3em;
+  padding: 0em 2em;
   font-size: 16px;
   min-width: 340px;
 }
