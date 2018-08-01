@@ -67,7 +67,7 @@ class User(db.Model):
         except BadSignature:
             print('token is not valid')
             return None
-        user = User.query.get(id=data.get('id'))
+        user = User.query.get(data.get('id'))
         if user is None:
             return False
         return User

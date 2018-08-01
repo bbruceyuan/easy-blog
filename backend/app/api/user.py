@@ -5,9 +5,11 @@ from flask import jsonify, request, url_for, current_app
 from ..model import User, Post
 from . import api
 from .. import db
+from .authentication import auth
 
 
 @api.route('/users/<uid>', methods=['GET', 'DELETE'])
+@auth.login_required
 def get_user(uid):
     uu = UserUtils(uid)
     if request.method == 'GET':
@@ -17,6 +19,7 @@ def get_user(uid):
 
 
 @api.route('/users/<uid>/posts/')
+@auth.login_required
 def get_user_posts(uid):
     user = User.query.get_or_404(uid)
     page = request.args.get('page', 1, type=int)
@@ -74,6 +77,7 @@ class UserUtils:
 
 
 @api.route('/test')
+@auth.login_required
 def get_random_number():
     import random
     return jsonify(

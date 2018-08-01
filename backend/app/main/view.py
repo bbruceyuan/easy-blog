@@ -3,7 +3,8 @@
 
 
 from . import main
-from flask import jsonify, render_template, redirect, request, abort, session, url_for, current_app
+from flask import jsonify, render_template, redirect, \
+    request, abort, session, url_for, current_app, g
 from ..api.authentication import auth
 from ..model import User, Post
 from .. import db
@@ -25,6 +26,19 @@ def login():
         # todo, 需要考虑在logout的时候怎么处理 session. 貌似这个session和token一样，可以有时间限制
         session['username'] = data.get('username')
     return redirect(url_for('api.get_token'))
+
+
+@main.route('/logout')
+@auth.login_required
+def logout():
+    g.current_user = None
+    g.user_name = None
+    g.use_token = False
+    session['username'] = None
+    return jsonify({
+        'type': 'logout',
+        'status': 'ok'
+    })
 
 
 @main.route('/register', methods=['POST'])
@@ -50,7 +64,7 @@ def register():
     user.email = email
     db.session.add(user)
     db.session.commit()
-    return jsonify({'username': user.username})
+    return jsonify({'username': user.username}), 201, {'location': 'net'}
 
 
 @main.route('/posts')
@@ -74,7 +88,7 @@ def get_posts():
             # 具体的格式如下
             """
                 post_json = { # 注释见Post
-                    'url': url_for('main.get_post', id=self.id),
+                    'url': url_for('api.get_post', id=self.id),
                     'title': self.title,
                     'body': self.body,
                     'body_html': self.body_html,
@@ -90,7 +104,7 @@ def get_posts():
         })
 
 
-@main.route('/post/<int:pid>')
+@main.route('/posts/<int:pid>')
 def get_post(pid):
     post = Post.query.get_or_404(pid)
     return jsonify(post.to_json())

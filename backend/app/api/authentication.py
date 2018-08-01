@@ -37,6 +37,7 @@ def verify_password(username_or_token, password):
     if not user:
         return False
     g.current_user = user
+    g.user_name = user.username
     g.token_used = False
     return g.current_user.verify_password(password)
 
@@ -48,20 +49,22 @@ def auth_error():
 
 # todo, 好好研究一下这个怎么放比较好
 # 这个before_request仅仅对api下的路由生效
-@api.before_request
-@auth.login_required
-def before_request():
-    """
-    这么做的作用就是让api下所有的路由都需要auth.login_required
-    :return:
-    """
-    pass
+# @api.before_request
+# @auth.login_required
+# def before_request():
+#     """
+#     这么做的作用就是让api下所有的路由都需要auth.login_required
+#     :return:
+#     """
+#     pass
 
 
 @api.route('/token')
+@auth.login_required
 def get_token():
     # 因为g.current_user.generate_auth.token是一个byte值，所以需要decode
     data = {
+        'loginUser': g.user_name,
         'token': g.current_user.generate_auth_token(expiration=360000).decode('utf-8'),
         'expiration': 360000
     }
